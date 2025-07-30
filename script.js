@@ -32,7 +32,7 @@ const questions = [
 const button = document.getElementById('submit');
 const result = document.getElementById('score');
 const score = +localStorage.getItem('score');
-result.innerText = `Your score is ${score} out of 5`;
+result.innerText = score ?`Your score is ${score} out of 5`:"";
 
  const userAnswers = JSON.parse(sessionStorage.getItem('progress')) || null;
  const selected = Array(questions.length).fill(-1);

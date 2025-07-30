@@ -31,8 +31,8 @@ const questions = [
 ];
 const button = document.getElementById('submit');
 const result = document.getElementById('score');
-const score = localStorage.getItem('score');
-result.innerText = +score ||"";
+const score = +localStorage.getItem('score');
+result.innerText = `Your score is ${score} out of 5`;
 
  const userAnswers = JSON.parse(sessionStorage.getItem('progress')) || null;
  const selected = Array(questions.length).fill(-1);
@@ -85,7 +85,7 @@ button.onclick = ()=>{
 	console.log("score :",newscore)
 	localStorage.setItem('score',newscore);
 	result.innerText = ""
-	result.innerText=(newscore)
+	result.innerText=`Your score is ${newscore} out of 5`;
 	
 }
 renderQuestions();

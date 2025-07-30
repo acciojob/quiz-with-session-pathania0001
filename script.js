@@ -29,12 +29,26 @@ const questions = [
     answer: "Ottawa",
   },
 ];
+const button = document.getElementById('submit');
+const result = document.getElementById('score');
+const score = localStorage.getItem('score');
+result.innerText = score ||"";
 
+ const userAnswers = JSON.parse(sessionStorage.getItem('progress')) || null;
+ const selected = Array(questions.length).fill(-1);
+console.log(userAnswers)
+if(userAnswers!==null){
+  for(let i=0;i<userAnswers.length;i++){
+	  selected[i] = userAnswers[i];
+  }
+}
+const mainQuizDiv = document.getElementById('questions');
 // Display the quiz questions and choices
 function renderQuestions() {
   for (let i = 0; i < questions.length; i++) {
     const question = questions[i];
     const questionElement = document.createElement("div");
+	 
     const questionText = document.createTextNode(question.question);
     questionElement.appendChild(questionText);
     for (let j = 0; j < question.choices.length; j++) {
@@ -43,14 +57,37 @@ function renderQuestions() {
       choiceElement.setAttribute("type", "radio");
       choiceElement.setAttribute("name", `question-${i}`);
       choiceElement.setAttribute("value", choice);
-      if (userAnswers[i] === choice) {
+      if (selected[i] === choice) {
         choiceElement.setAttribute("checked", true);
       }
+
+		
       const choiceText = document.createTextNode(choice);
       questionElement.appendChild(choiceElement);
       questionElement.appendChild(choiceText);
+	   choiceElement.onclick = (e)=>{
+		  const {name,value} = e.target;
+		   selected[i] = value;
+		   sessionStorage.setItem('progress',JSON.stringify(selected))
+		  console.log(sessionStorage)
+	  }
     }
-    questionsElement.appendChild(questionElement);
+	  
+	mainQuizDiv.appendChild(questionElement);
   }
 }
+button.onclick = ()=>{
+	let newscore = 0;
+	questions.forEach((question,index)=>{
+		if(question.answer === selected[index])
+			newscore++;
+	})
+	console.log("score :",newscore)
+	localStorage.setItem('score',newscore);
+	result.innerText = ""
+	result.innerText=(newscore)
+	
+}
 renderQuestions();
+
+
